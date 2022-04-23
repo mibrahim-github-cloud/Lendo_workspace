@@ -1,6 +1,6 @@
 ## Lendo_workspace
 
-This is about to describe the features used in this assessment. I have used H2-In Memory DB for data persistence. For Authentication layer used JWT implementation along with Spring Security. Below is the list of APIs Supported. A document(Assessment) in the Workspace showing the request and response of all the APIs and also the data persitence in the DB.
+This is about to describe the features used in this assessment. I have used H2-In Memory DB for data persistence. For Authentication layer used JWT implementation along with Spring Security. Below is the list of APIs Supported. A document(Assessment.docx) in the Workspace showing the request and response of all the APIs and also the data persitence in the DB.
 
 
 Note: Except "Create User" and "User Login" API all other APIs required JWT Authorization Token to get served. Else we will get "Forbidden" response error code.
