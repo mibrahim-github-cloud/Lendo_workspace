@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class PostDto implements Serializable {
 
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4563770798255458728L;
-	
+	private static final long serialVersionUID = -7067554275689711592L;
 	private String userId;
 	private String title;
 	private String body;

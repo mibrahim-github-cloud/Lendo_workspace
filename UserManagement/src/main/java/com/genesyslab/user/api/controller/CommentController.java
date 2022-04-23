@@ -18,65 +18,65 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.genesyslab.user.api.model.CreatePostRequestModel;
-import com.genesyslab.user.api.model.CreatePostResponseModel;
+import com.genesyslab.user.api.model.CommentResponseModel;
+import com.genesyslab.user.api.model.CreateCommentRequestModel;
+import com.genesyslab.user.api.model.CreateCommentResponseModel;
 import com.genesyslab.user.api.model.FailureResponseModel;
-import com.genesyslab.user.api.model.PostResponseModel;
-import com.genesyslab.user.api.model.shared.PostDto;
-import com.genesyslab.user.api.service.PostService;
+import com.genesyslab.user.api.model.shared.CommentDto;
+import com.genesyslab.user.api.service.CommentService;
 
 @RestController
-@RequestMapping("/posts")
-public class PostController {
-	
+@RequestMapping("/comments")
+public class CommentController {
+
 	@Autowired
-	PostService postService;
+	CommentService commentService;
 	
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<?> createPost(@RequestBody @Valid CreatePostRequestModel postModel) {
+	public ResponseEntity<?> createComment(@RequestBody @Valid CreateCommentRequestModel commentModel) {
 
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		PostDto postDto = modelMapper.map(postModel, PostDto.class);
+		CommentDto commentDto = modelMapper.map(commentModel, CommentDto.class);
 
-		PostDto createdPost;
+		CommentDto createdComment;
 		try {
-			createdPost = postService.createPost(postDto);
-			CreatePostResponseModel responseModel = modelMapper.map(createdPost, CreatePostResponseModel.class);
+			createdComment = commentService.createComment(commentDto);
+			CreateCommentResponseModel responseModel = modelMapper.map(createdComment, CreateCommentResponseModel.class);
 			return ResponseEntity.status(HttpStatus.CREATED).body(responseModel);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN)
-					.body(new FailureResponseModel("Not able to create the Post for "+postModel.getUserId()));
+					.body(new FailureResponseModel("Not able to create the Comment for "+commentDto.getPostId()));
 		}
 
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<PostResponseModel>> getPosts() {
+	public ResponseEntity<List<CommentResponseModel>> getComments() {
 
-		List<PostDto> postDtos = postService.getPosts();
+		List<CommentDto> commentDtos = commentService.getComments();
 		ModelMapper modelMapper = new ModelMapper();
 
-		List<PostResponseModel> returnValue = postDtos.stream()
-				.map(postDto -> modelMapper.map(postDto, PostResponseModel.class)).collect(Collectors.toList());
+		List<CommentResponseModel> returnValue = commentDtos.stream()
+				.map(commentDto -> modelMapper.map(commentDto, CommentResponseModel.class)).collect(Collectors.toList());
 
 		return ResponseEntity.status(HttpStatus.OK).body(returnValue);
 
 	}
 	
-	@GetMapping(value = "/{userId}")
-	public ResponseEntity<List<PostResponseModel>> getUserPosts(@PathVariable("userId") String userId) {
+	@GetMapping(value = "/{postId}")
+	public ResponseEntity<List<CommentResponseModel>> getUserPosts(@PathVariable("postId") String postId) {
 
-		List<PostDto> postDtos = postService.getUserPosts(userId);
+		List<CommentDto> commentDtos = commentService.getPostComments(postId);
 
 		ModelMapper modelMapper = new ModelMapper();
 
-		List<PostResponseModel> returnValue = postDtos.stream()
-				.map(postDto -> modelMapper.map(postDto, PostResponseModel.class)).collect(Collectors.toList());
+		List<CommentResponseModel> returnValue = commentDtos.stream()
+				.map(commentDto -> modelMapper.map(commentDto, CommentResponseModel.class)).collect(Collectors.toList());
 
 		return ResponseEntity.status(HttpStatus.OK).body(returnValue);
 
-	}
 
+	}
 }
