@@ -15,7 +15,7 @@ Note: Except "Create User" and "User Login" API all other APIs required JWT Auth
  * Create Post(http://localhost:8081/posts)
  * GetAllPosts(http://localhost:8081/posts)
  * GetUserPosts(http://localhost:8081/posts/{userId}
- * 
+ 
 ### Comments APIs
  * Create Comment(http://localhost:8081/comments)
  * GetAllComments(http://localhost:8081/comments)
